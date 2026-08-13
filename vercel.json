@@ -1,24 +1,16 @@
 {
-  "version": 2,
-  "builds": [
-    {
-      "src": "backend/api/index.ts",
-      "use": "@vercel/node",
-      "config": {
-        "includeFiles": [
-          "backend/src/**",
-          "backend/prisma/**",
-          "backend/node_modules/.prisma/**",
-          "backend/node_modules/@prisma/**"
-        ]
-      }
+  "services": {
+    "frontend": {
+      "root": "frontend/",
+      "framework": "nextjs"
     },
-    {
-      "src": "frontend/package.json",
-      "use": "@vercel/next"
+    "backend": {
+      "root": "backend/",
+      "entrypoint": "api/index.ts"
     }
-  ],
-  "routes": [
-    { "src": "/api/(.*)", "dest": "backend/api/index.ts" }
+  },
+  "rewrites": [
+    { "source": "/api/(.*)", "destination": { "service": "backend" } },
+    { "source": "/(.*)", "destination": { "service": "frontend" } }
   ]
 }
