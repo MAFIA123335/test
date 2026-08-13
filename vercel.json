@@ -7,7 +7,8 @@
     "backend": {
       "root": "backend/",
       "entrypoint": "api/index.ts",
-      "framework": "express"
+      "framework": "express",
+      "buildCommand": "prisma generate"
     }
   },
   "rewrites": [
