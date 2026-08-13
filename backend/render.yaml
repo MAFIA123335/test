@@ -1,0 +1,50 @@
+services:
+  - type: web
+    name: beauty-center-api
+    runtime: node
+    region: frankfurt
+    plan: free
+    rootDir: backend
+    # Build: install deps, generate Prisma client, compile TypeScript.
+    # Migrations + seed run automatically on startup (AUTO_MIGRATE/AUTO_SEED).
+    buildCommand: npm install && npx prisma generate && npm run build
+    startCommand: node dist/server.js
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 4000
+      # 👉 The ONLY value you must paste: your Postgres connection string.
+      - key: DATABASE_URL
+        sync: false
+      # Optional — leave unset to reuse DATABASE_URL for migrations.
+      - key: DIRECT_URL
+        sync: false
+      - key: AUTO_MIGRATE
+        value: "true"
+      - key: AUTO_SEED
+        value: "true"
+      # Secrets are generated once by Render and stay stable across restarts.
+      - key: JWT_ACCESS_SECRET
+        generateValue: true
+      - key: JWT_REFRESH_SECRET
+        generateValue: true
+      - key: JWT_RESET_SECRET
+        generateValue: true
+      - key: COOKIE_SECRET
+        generateValue: true
+      - key: COOKIE_SECURE
+        value: "true"
+      # Set these to your deployed frontend URL (e.g. https://your-app.vercel.app).
+      - key: CLIENT_URL
+        sync: false
+      - key: CORS_ORIGINS
+        sync: false
+      # Optional — only needed for admin image uploads.
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_SERVICE_ROLE_KEY
+        sync: false
+      - key: SUPABASE_STORAGE_BUCKET
+        value: beauty-center
